@@ -1,104 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Tabela de Classificação</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Tabela de Classificação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-success p-3 fixed-top shadow">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html"><i class="bi bi-house"></i> Home</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="registar.html"><i class="bi bi-speedometer2"></i> T1</a></li>
-          <li class="nav-item"><a class="nav-link active" href="tabela.html"><i class="bi bi-speedometer2"></i> T2</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success p-4 fixed-top">
+        <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><i class="bi bi-house"></i> Home</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="registar.html"><i class="bi bi-speedometer2"></i> T1</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="tabela.html"><i class="bi bi-speedometer2"></i> T2</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex">
+        <div class="bg-secondary text-white p-3" id="sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link text-white" href="#">1º Trimestre</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="#">2º Trimestre</a></li>
+                <li class="nav-item"><a class="nav-link active text-white" href="trmestre.html">3º Trimestre</a></li>
+            </ul>
+        </div>
 
-  <!-- Layout principal -->
-  <div class="d-flex" style="margin-top: 70px;">
-    <!-- Sidebar -->
-    <div class="bg-secondary text-white p-3 d-none d-md-block" id="sidebar">
-      <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="#">1º Trimestre</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">2º Trimestre</a></li>
-        <li class="nav-item"><a class="nav-link active text-white" href="trmestre.html">3º Trimestre</a></li>
-      </ul>
+        <!-- Conteúdo principal -->
+        <main class="p-4 flex-grow-1" id="conteudo">
+            <h2>Tabela de Classificação</h2>
+            <table class="table table-striped table-hover shadow">
+                <thead class="table-success">
+                    <tr>
+                    <th>Nome</th><th>Número</th><th>Sala</th><th>Turma</th><th>Disciplina</th>
+                    <th>Nota 1</th><th>Nota 2</th><th>Nota 3</th><th>Média</th><th>Classificação</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaAluno"></tbody>
+            </table>
+        </main>
     </div>
+    <script>
+        const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+        let html = "";
 
-    <!-- Conteúdo -->
-    <main class="p-4 flex-grow-1" id="conteudo">
-      <h2 class="mb-4 text-center">📊 Tabela de Classificação</h2>
-      <div class="table-responsive">
-        <table id="tabelaAlunos" class="table table-striped table-hover table-bordered align-middle">
-          <thead class="table-success">
+        alunos.forEach(aluno => {
+            const media = ((aluno.nota1 + aluno.nota2 + aluno.nota3) / 3).toFixed(2);
+            let classificacao = media >= 7 ? "Aprovado" : media >= 5 ? "Recuperação" : "Reprovado";
+
+            html += `
             <tr>
-              <th>Nome</th><th>Número</th><th>Sala</th><th>Turma</th><th>Disciplina</th>
-              <th>Nota 1</th><th>Nota 2</th><th>Nota 3</th><th>Média</th><th>Classificação</th>
+                <td>${aluno.nome}</td>
+                <td>${aluno.numeroAluno}</td>
+                <td>${aluno.numeroSala}</td>
+                <td>${aluno.turma}</td>
+                <td>${aluno.disciplina}</td>
+                <td>${aluno.nota1}</td>
+                <td>${aluno.nota2}</td>
+                <td>${aluno.nota3}</td>
+                <td>${media}</td>
+                <td>${classificacao}</td>
             </tr>
-          </thead>
-          <tbody id="tabelaAluno"></tbody>
-        </table>
-      </div>
-    </main>
-  </div>
+            `;
+        });
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- DataTables JS -->
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
-    let html = "";
-
-    alunos.forEach(aluno => {
-      const media = ((aluno.nota1 + aluno.nota2 + aluno.nota3) / 3).toFixed(2);
-      let classificacao = media >= 7 ? "✅ Aprovado" : media >= 5 ? "⚠️ Recuperação" : "❌ Reprovado";
-
-      html += `
-        <tr>
-          <td>${aluno.nome}</td>
-          <td>${aluno.numeroAluno}</td>
-          <td>${aluno.numeroSala}</td>
-          <td>${aluno.turma}</td>
-          <td>${aluno.disciplina}</td>
-          <td>${aluno.nota1}</td>
-          <td>${aluno.nota2}</td>
-          <td>${aluno.nota3}</td>
-          <td><strong>${media}</strong></td>
-          <td>${classificacao}</td>
-        </tr>
-      `;
-    });
-
-    document.getElementById("tabelaAluno").innerHTML = html;
-
-    // Inicializa DataTables
-    $(document).ready(function() {
-      $('#tabelaAlunos').DataTable({
-        language: {
-          url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
-        },
-        pageLength: 5,
-        lengthMenu: [5, 10, 20],
-        ordering: true,
-        searching: true
-      });
-    });
-  </script>
+        document.getElementById("tabelaAluno").innerHTML = html;
+    </script>
 </body>
 </html>
+
