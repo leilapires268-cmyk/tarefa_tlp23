@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Página com Navbar e Sidebar Fixas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        /* Ajuste para compensar a navbar fixa */
+        body {
+            padding-top: 70px;
+        }
+
+        /* Sidebar fixa */
+        #sidebar {
+            width: 220px;
+            min-height: 100vh;
+            position: fixed;
+            top: 50px; /* abaixo da navbar */
+            left: 0;
+        }
+
+        /* Conteúdo principal com margem para não ficar atrás da sidebar */
+        #conteudo {
+            margin-left: 220px;
+            overflow-y: auto;
+            height: calc(100vh - 70px);
+        }
+
+        /* Links da sidebar */
+        #sidebar .nav-link {
+            padding: 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        #sidebar .nav-link:hover {
+            background-color: #2980b9;
+        }
+        
+        #sidebar .nav-link.active {
+            background-color: #1f6391;
+            font-weight: bold;
+        }
+        #navbarNav .nav-link:hover{
+            background-color: #080b0c;
+            font-weight: bold;
+            border-radius: 12%;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+  <!-- Navbar fixa -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="nav-link text-white active" href="index.html"><i class="bi bi-house-door-fill"></i> Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="cadastrar.html">T1</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tabela.html">T2</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="d-flex">
+        <!-- Sidebar fixa -->
+        <div class="bg-dark text-white p-3 position=fixed" id="sidebar">
+        <h5 class="text-center">Menu</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link text-white" href="#">1º Trimestre</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">2º Trimestre</a></li>
+            <li class="nav-item"><a class="nav-link active text-white" href="#">3º Trimestre</a></li>
+        </ul>
+        </div>
+
+        <!-- Conteúdo principal rolável -->
+        <main class="p-4 flex-grow-1" id="conteudo">
+            <h2>Cadastro do Aluno</h2>
+            <form id="alunoForm">
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Número do Aluno</label>
+                    <input type="text" class="form-control" id="numeroAluno" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Número da Sala</label>
+                    <input type="text" class="form-control" id="numeroSala" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Turma</label>
+                    <input type="text" class="form-control" id="turma" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Disciplina</label>
+                    <input type="text" class="form-control" id="disciplina" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nota 1</label>
+                    <input type="number" class="form-control" id="nota1" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nota 2</label>
+                    <input type="number" class="form-control" id="nota2" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nota 3</label>
+                    <input type="number" class="form-control" id="nota3" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById("alunoForm").addEventListener("submit", function(e){
+        e.preventDefault();
+        const aluno = {
+            nome: document.getElementById("nome").value,
+            numeroAluno: document.getElementById("numeroAluno").value,
+            numeroSala: document.getElementById("numeroSala").value,
+            turma: document.getElementById("turma").value,
+            disciplina: document.getElementById("disciplina").value,
+            nota1: parseFloat(document.getElementById("nota1").value),
+            nota2: parseFloat(document.getElementById("nota2").value),
+            nota3: parseFloat(document.getElementById("nota3").value)
+            };
+            localStorage.setItem("aluno", JSON.stringify(aluno));
+            window.location.href = "tabela.html";
+            });
+    </script>
+</body>
+</html>
